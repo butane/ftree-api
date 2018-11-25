@@ -1,21 +1,53 @@
-# Lumen PHP Framework
+# APIs for Family Tree
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+API docs
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Sign Up
 
-## Official Documentation
+### Request
+```
+POST /auth/signup?email=user@example.com&name=User Name&password=password HTTP/1.1
+```
+### Response
+```
+{
+    "user": {
+        "name": "User Name",
+        "email": "user@example.com",
+        "updated_at": "2018-11-25 16:49:01",
+        "created_at": "2018-11-25 16:49:01",
+        "id": 1
+    }
+}
+```
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+## Login
 
-## Security Vulnerabilities
+### Request
+```
+POST /auth/login?email=user@example.com&password=password HTTP/1.1
+```
+### Response
+```
+{
+    "token": "jwt-string"
+}
+```
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## User profile
 
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+### Request
+```
+GET /profile?token=jwt-string HTTP/1.1
+```
+### Response
+```
+{
+    "id": 1,
+    "name": "User Name",
+    "email": "user@example.com",
+    "type": "admin",
+    "created_at": "2018-11-25 16:49:01",
+    "updated_at": "2018-11-25 16:49:01"
+}
+```
