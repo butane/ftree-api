@@ -63,10 +63,6 @@ class AuthController extends BaseController
         // Find the user by email
         $user = User::where('email', $this->request->input('email'))->first();
         if (!$user) {
-            // You wil probably have some sort of helpers or whatever
-            // to make sure that you have the same response format for
-            // differents kind of responses. But let's return the 
-            // below respose for now.
             return response()->json([
                 'error' => 'Email does not exist.'
             ], 400);
@@ -83,5 +79,39 @@ class AuthController extends BaseController
         return response()->json([
             'error' => 'Email or password is wrong.'
         ], 400);
+    }
+
+    public function createUser(User $user) {
+        $this->validate($this->request, [
+            'name'      => 'required',
+            'email'     => 'required|email',
+            'password'  => 'required'
+        ]);
+
+        // Find the user by email
+        $user = User::where('email', $this->request->input('email'))->first();
+        if ($user) {
+            return response()->json([
+                'error' => 'Email already exist.'
+            ], 400);
+        }
+
+        // Create new user
+        $newUser = new User;
+        $newUser->name = $this->request->input('name');
+        $newUser->email = $this->request->input('email');
+        $newUser->password = app('hash')->make($this->request->input('password'));
+        $result = $newUser->save();
+
+        if ($result) {
+            return response()->json([
+                'user' => $newUser
+            ], 200);
+        }
+
+        // Bad Request response
+        return response()->json([
+            'error' => 'Something went wrong.'
+        ], 500);
     }
 }
